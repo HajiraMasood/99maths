@@ -1,15 +1,18 @@
 import React from "react";
 import "./App.css";
+import axios from "axios";
+
+const BASE_URL = "/api";
 
 class List extends React.Component {
   showList(list) {
     const notes = [...list];
     const listItems = notes.map(note => {
       return (
-        <div class="col-md-4">
+        <div class="col-md-4" key={note._id}>
           <div class="card mb-4 shadow-sm">
             <div class="card-body">
-              <p class="card-text">{note}</p>
+              <p class="card-text">{note.text}</p>
             </div>
           </div>
         </div>
@@ -32,16 +35,26 @@ class App extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.fetchNotes();
+  }
+
   updateNoteText(event) {
     const inputText = event.target.value;
     this.setState({ noteText: inputText });
-    console.log(this.state.noteText);
   }
 
-  saveNote() {
-    const savedList = [...this.state.list, this.state.noteText];
-    this.setState({ list: savedList, noteText: "" });
-    console.log(this.state.list);
+  async fetchNotes() {
+    const response = await axios.get(`${BASE_URL}/notes`);
+    const allNotes = response.data;
+
+    this.setState({ list: allNotes });
+  }
+
+  async saveNote() {
+    const newNote = { text: this.state.noteText };
+    await axios.post(`${BASE_URL}/notes`, newNote);
+    await this.fetchNotes();
   }
 
   render() {

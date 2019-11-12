@@ -9,6 +9,6 @@ exports.plugin = {
   register: async function(server) {
     await client.connect();
 
-    server.decorate("server", "db", client.db("test"));
+    server.decorate("server", "db", client.db("99math"));
   }
 };

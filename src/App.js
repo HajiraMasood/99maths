@@ -5,9 +5,17 @@ class List extends React.Component {
   showList(list) {
     const notes = [...list];
     const listItems = notes.map(note => {
-      return <li>{note}</li>;
+      return (
+        <div class="col-md-4">
+          <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+              <p class="card-text">{note}</p>
+            </div>
+          </div>
+        </div>
+      );
     });
-    return <ul>{listItems}</ul>;
+    return <div class="row">{listItems}</div>;
   }
 
   render() {
@@ -32,28 +40,42 @@ class App extends React.Component {
 
   saveNote() {
     const savedList = [...this.state.list, this.state.noteText];
-    this.setState({ list: savedList });
+    this.setState({ list: savedList, noteText: "" });
     console.log(this.state.list);
   }
 
   render() {
     return (
-      <div className="App">
-        <header>
+      <div>
+        <header class="navbar navbar-dark shadow-sm">
           <h3>Notes Keep</h3>
         </header>
-        <body>
-          <div>
-            <input
-              className="note"
-              type="textarea"
-              value={this.state.noteText}
-              onChange={e => this.updateNoteText(e)}
-            ></input>
-            <button onClick={() => this.saveNote()}>Save</button>
-          </div>
-          <div>
-            <List value={this.state.list} />
+        <body class="jumbotron text-center">
+          <section>
+            <div class="container">
+              <p class="form-group">
+                <textarea
+                  class="form-control"
+                  value={this.state.noteText}
+                  placeholder="Add New Note"
+                  onChange={event => this.updateNoteText(event)}
+                ></textarea>
+              </p>
+              <p>
+                <button
+                  class="btn btn-primary my-2"
+                  onClick={() => this.saveNote()}
+                >
+                  Save
+                </button>
+              </p>
+            </div>
+          </section>
+
+          <div class="album py-5 bg-light">
+            <div class="container">
+              <List value={this.state.list} />
+            </div>
           </div>
         </body>
       </div>

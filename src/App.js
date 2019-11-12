@@ -1,30 +1,7 @@
 import React from "react";
 import "./App.css";
-import axios from "axios";
-
-const BASE_URL = "/api";
-
-class List extends React.Component {
-  showList(list) {
-    const notes = [...list];
-    const listItems = notes.map(note => {
-      return (
-        <div class="col-md-4" key={note._id}>
-          <div class="card mb-4 shadow-sm">
-            <div class="card-body">
-              <p class="card-text">{note.text}</p>
-            </div>
-          </div>
-        </div>
-      );
-    });
-    return <div class="row">{listItems}</div>;
-  }
-
-  render() {
-    return <div>{this.showList(this.props.value)}</div>;
-  }
-}
+import List from "./List";
+import * as NotesService from "./notesService";
 
 class App extends React.Component {
   constructor(props) {
@@ -45,30 +22,29 @@ class App extends React.Component {
   }
 
   async fetchNotes() {
-    const response = await axios.get(`${BASE_URL}/notes`);
-    const allNotes = response.data;
+    const response = await NotesService.fetchNotes();
+    const allNotes = response;
 
     this.setState({ list: allNotes });
   }
 
   async saveNote() {
-    const newNote = { text: this.state.noteText };
-    await axios.post(`${BASE_URL}/notes`, newNote);
+    await NotesService.saveNote(this.state.noteText);
     await this.fetchNotes();
   }
 
   render() {
     return (
       <div>
-        <header class="navbar navbar-dark shadow-sm">
+        <header className="navbar navbar-dark shadow-sm">
           <h3>Notes Keep</h3>
         </header>
-        <body class="jumbotron text-center">
+        <div className="jumbotron text-center">
           <section>
-            <div class="container">
-              <p class="form-group">
+            <div className="container">
+              <p className="form-group">
                 <textarea
-                  class="form-control"
+                  className="form-control"
                   value={this.state.noteText}
                   placeholder="Add New Note"
                   onChange={event => this.updateNoteText(event)}
@@ -76,7 +52,7 @@ class App extends React.Component {
               </p>
               <p>
                 <button
-                  class="btn btn-primary my-2"
+                  className="btn btn-primary my-2"
                   onClick={() => this.saveNote()}
                 >
                   Save
@@ -85,12 +61,12 @@ class App extends React.Component {
             </div>
           </section>
 
-          <div class="album py-5 bg-light">
-            <div class="container">
+          <div className="album py-5 bg-light">
+            <div className="container">
               <List value={this.state.list} />
             </div>
           </div>
-        </body>
+        </div>
       </div>
     );
   }

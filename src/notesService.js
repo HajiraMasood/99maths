@@ -4,7 +4,7 @@ const BASE_URL = "/api";
 
 export async function fetchNotes() {
   const response = await axios.get(`${BASE_URL}/notes`);
-  return response.data;
+  return response;
 }
 export async function saveNote(noteText) {
   const newNote = { text: noteText };

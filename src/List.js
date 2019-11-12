@@ -1,4 +1,5 @@
 import React from "react";
+import Note from "./Note";
 
 class List extends React.Component {
   showList(list) {
@@ -6,11 +7,7 @@ class List extends React.Component {
     const listItems = notes.map(note => {
       return (
         <div className="col-md-4" key={note._id}>
-          <div className="card mb-4 shadow-sm">
-            <div className="card-body">
-              <p className="card-text">{note.text}</p>
-            </div>
-          </div>
+          <Note value={note} />
         </div>
       );
     });

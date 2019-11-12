@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import List from "./List";
 import * as NotesService from "./notesService";
+import { allResolved } from "q";
 
 class App extends React.Component {
   constructor(props) {
@@ -23,7 +24,7 @@ class App extends React.Component {
 
   async fetchNotes() {
     const response = await NotesService.fetchNotes();
-    const allNotes = response;
+    const allNotes = response.data;
 
     this.setState({ list: allNotes });
   }
